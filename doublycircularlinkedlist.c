@@ -1,3 +1,5 @@
+/*Name: Monish Khan
+Roll no: 24051636*/
 #include <stdio.h>
 #include <stdlib.h>
 struct dcll {
@@ -211,31 +213,88 @@ void findmiddle() {
     printf("Middle element is: %d\n", slow->data);
 }
 
-// Insert at beginning
+// Insert at beginning without calling insert()
 void insertfn(int data) {
-    insert(data, 1);
+    struct dcll* newNode = (struct dcll*)malloc(sizeof(struct dcll));
+    if (!newNode) {
+        printf("Memory allocation failed!\n");
+        return;
+    }
+    newNode->data = data;
+    if (head == NULL) {
+        newNode->next = newNode->prev = newNode;
+        head = newNode;
+    } else {
+        struct dcll* last = head->prev;
+        newNode->next = head;
+        newNode->prev = last;
+        last->next = newNode;
+        head->prev = newNode;
+        head = newNode;
+    }
     printf("Node inserted at the beginning.\n");
 }
 
-// Insert at end
+// Insert at end without calling insert()
 void insertln(int data) {
-    int length = countnodes();
-    insert(data, length + 1);
+    struct dcll* newNode = (struct dcll*)malloc(sizeof(struct dcll));
+    if (!newNode) {
+        printf("Memory allocation failed!\n");
+        return;
+    }
+    newNode->data = data;
+    if (head == NULL) {
+        newNode->next = newNode->prev = newNode;
+        head = newNode;
+    } else {
+        struct dcll* last = head->prev;
+        newNode->next = head;
+        newNode->prev = last;
+        last->next = newNode;
+        head->prev = newNode;
+    }
     printf("Node inserted at the end.\n");
 }
 
-// Delete first node
+// Delete first node without calling delete()
 void deletefn() {
-    delete(1);
+    if (head == NULL) {
+        printf("List is empty\n");
+        return;
+    }
+    if (head->next == head) {
+        free(head);
+        head = NULL;
+    } else {
+        struct dcll* last = head->prev;
+        struct dcll* toDelete = head;
+        head = head->next;
+        last->next = head;
+        head->prev = last;
+        free(toDelete);
+    }
     printf("First node deleted.\n");
 }
 
-// Delete last node
+// Delete last node without calling delete()
 void deleteln() {
-    int length = countnodes();
-    delete(length);
+    if (head == NULL) {
+        printf("List is empty\n");
+        return;
+    }
+    if (head->next == head) {
+        free(head);
+        head = NULL;
+    } else {
+        struct dcll* last = head->prev;
+        struct dcll* secondLast = last->prev;
+        secondLast->next = head;
+        head->prev = secondLast;
+        free(last);
+    }
     printf("Last node deleted.\n");
 }
+
 
 int main() {
     int choice, n, data, pos;
